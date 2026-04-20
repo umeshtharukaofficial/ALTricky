@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StudyFlow — Professional Daily Exam Workload Manager. Organize your subjects, build timetables, and track progress.">
+    <title>StudyFlow — Daily Exam Workload Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg>
+            </div>
+            <span class="brand-name">StudyFlow</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-tab="dashboard" id="nav-dashboard">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    <rect x="14" y="14" width="7" height="7" rx="1"/>
+                </svg>
+                <span>Dashboard</span>
+            </button>
+            <button class="nav-item" data-tab="subjects" id="nav-subjects">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+                <span>Subjects</span>
+            </button>
+            <button class="nav-item" data-tab="timetable" id="nav-timetable">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <span>Timetable</span>
+            </button>
+            <button class="nav-item" data-tab="progress" id="nav-progress">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+                <span>Progress</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="date-display" id="currentDate"></div>
+            <div class="time-display" id="currentTime"></div>
+        </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header" id="mobileHeader">
+        <button class="menu-toggle" id="menuToggle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+        </button>
+        <div class="mobile-brand">
+            <div class="brand-icon small">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg>
+            </div>
+            <span>StudyFlow</span>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="mainContent">
+
+        <!-- ============ DASHBOARD TAB ============ -->
+        <section class="tab-content active" id="tab-dashboard">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle" id="greetingText">Good morning! Here's your study overview.</p>
+                </div>
+                <button class="btn btn-primary" id="quickAddBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Add Subject
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card stat-card-total">
+                    <div class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="statTotal">0</span>
+                        <span class="stat-label">Total Subjects</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-completed">
+                    <div class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="statCompleted">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-pending">
+                    <div class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="statPending">0</span>
+                        <span class="stat-label">Pending</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-progress">
+                    <div class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"/>
+                            <line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="6" y1="20" x2="6" y2="14"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="statProgress">0%</span>
+                        <span class="stat-label">Overall Progress</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Schedule & Recent Activity -->
+            <div class="dashboard-grid">
+                <div class="card today-schedule">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            Today's Schedule
+                        </h2>
+                        <span class="badge badge-accent" id="todayDay">Monday</span>
+                    </div>
+                    <div class="card-body" id="todayScheduleList">
+                        <div class="empty-state">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                            <p>No sessions scheduled for today</p>
+                            <small>Go to Timetable to add sessions</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card category-overview">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            By Category
+                        </h2>
+                    </div>
+                    <div class="card-body" id="categoryOverview">
+                        <div class="empty-state">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <p>No categories yet</p>
+                            <small>Add subjects to see category breakdown</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Exams -->
+            <div class="card upcoming-exams">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                        Upcoming Exams
+                    </h2>
+                </div>
+                <div class="card-body" id="upcomingExamsList">
+                    <div class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+                            <rect x="3" y="4" width="18" height="18" rx="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        <p>No upcoming exams</p>
+                        <small>Add exam dates to your subjects</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ SUBJECTS TAB ============ -->
+        <section class="tab-content" id="tab-subjects">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Subjects</h1>
+                    <p class="page-subtitle">Manage and categorize your exam subjects</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-box" id="searchBox">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input type="text" placeholder="Search subjects..." id="searchInput">
+                    </div>
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="all">All Categories</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <button class="btn btn-primary" id="addSubjectBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Add Subject
+                    </button>
+                </div>
+            </div>
+
+            <div class="subjects-list" id="subjectsList">
+                <div class="empty-state large">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                    <h3>No subjects added yet</h3>
+                    <p>Click "Add Subject" to get started with your study plan</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ TIMETABLE TAB ============ -->
+        <section class="tab-content" id="tab-timetable">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Timetable</h1>
+                    <p class="page-subtitle">Plan your weekly study schedule</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" id="clearTimetableBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                        Clear All
+                    </button>
+                    <button class="btn btn-primary" id="addSessionBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Add Session
+                    </button>
+                </div>
+            </div>
+
+            <div class="timetable-container">
+                <div class="timetable-grid" id="timetableGrid">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PROGRESS TAB ============ -->
+        <section class="tab-content" id="tab-progress">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Progress</h1>
+                    <p class="page-subtitle">Track your study progress and achievements</p>
+                </div>
+            </div>
+
+            <!-- Progress Overview -->
+            <div class="progress-overview">
+                <div class="card progress-ring-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Overall Completion</h2>
+                    </div>
+                    <div class="card-body centered">
+                        <div class="progress-ring-container">
+                            <svg class="progress-ring" width="200" height="200" viewBox="0 0 200 200">
+                                <circle class="progress-ring-bg" cx="100" cy="100" r="85" fill="none" stroke-width="12"/>
+                                <circle class="progress-ring-fill" id="progressRingFill" cx="100" cy="100" r="85" fill="none" stroke-width="12" stroke-dasharray="534" stroke-dashoffset="534"/>
+                            </svg>
+                            <div class="progress-ring-text">
+                                <span class="progress-ring-value" id="progressRingValue">0%</span>
+                                <span class="progress-ring-label">Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card progress-breakdown">
+                    <div class="card-header">
+                        <h2 class="card-title">Subject Progress</h2>
+                    </div>
+                    <div class="card-body" id="progressBreakdown">
+                        <div class="empty-state">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+                                <line x1="18" y1="20" x2="18" y2="10"/>
+                                <line x1="12" y1="20" x2="12" y2="4"/>
+                                <line x1="6" y1="20" x2="6" y2="14"/>
+                            </svg>
+                            <p>No progress data yet</p>
+                            <small>Add subjects and mark them as complete</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Streak -->
+            <div class="card streak-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                        Study Activity (Last 30 Days)
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="streak-grid" id="streakGrid">
+                        <!-- Generated by JS -->
+                    </div>
+                    <div class="streak-legend">
+                        <span>Less</span>
+                        <div class="streak-box level-0"></div>
+                        <div class="streak-box level-1"></div>
+                        <div class="streak-box level-2"></div>
+                        <div class="streak-box level-3"></div>
+                        <div class="streak-box level-4"></div>
+                        <span>More</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============ MODALS ============ -->
+
+    <!-- Add/Edit Subject Modal -->
+    <div class="modal-overlay" id="subjectModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="subjectModalTitle">Add New Subject</h2>
+                <button class="modal-close" id="closeSubjectModal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <form id="subjectForm">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="subjectName">Subject Name <span class="required">*</span></label>
+                        <input type="text" id="subjectName" placeholder="e.g., Mathematics" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectCategory">Category <span class="required">*</span></label>
+                        <div class="select-with-add">
+                            <select id="subjectCategory" required>
+                                <option value="">Select category</option>
+                                <option value="Science">Science</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Language">Language</option>
+                                <option value="Social Studies">Social Studies</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Arts">Arts</option>
+                                <option value="custom">+ Add Custom</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectPriority">Priority</label>
+                        <select id="subjectPriority">
+                            <option value="low">🟢 Low</option>
+                            <option value="medium" selected>🟡 Medium</option>
+                            <option value="high">🔴 High</option>
+                            <option value="critical">🔥 Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectExamDate">Exam Date</label>
+                        <input type="date" id="subjectExamDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectChapters">Total Chapters/Topics</label>
+                        <input type="number" id="subjectChapters" placeholder="e.g., 10" min="1" max="100">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="subjectNotes">Notes</label>
+                        <textarea id="subjectNotes" placeholder="Add any study notes or instructions..." rows="3"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Color Tag</label>
+                        <div class="color-picker" id="colorPicker">
+                            <button type="button" class="color-swatch active" data-color="#6C63FF" style="background:#6C63FF"></button>
+                            <button type="button" class="color-swatch" data-color="#00C9A7" style="background:#00C9A7"></button>
+                            <button type="button" class="color-swatch" data-color="#FF6B6B" style="background:#FF6B6B"></button>
+                            <button type="button" class="color-swatch" data-color="#FFA94D" style="background:#FFA94D"></button>
+                            <button type="button" class="color-swatch" data-color="#4ECDC4" style="background:#4ECDC4"></button>
+                            <button type="button" class="color-swatch" data-color="#A78BFA" style="background:#A78BFA"></button>
+                            <button type="button" class="color-swatch" data-color="#F472B6" style="background:#F472B6"></button>
+                            <button type="button" class="color-swatch" data-color="#34D399" style="background:#34D399"></button>
+                            <button type="button" class="color-swatch" data-color="#FBBF24" style="background:#FBBF24"></button>
+                            <button type="button" class="color-swatch" data-color="#60A5FA" style="background:#60A5FA"></button>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="subjectId">
+                <input type="hidden" id="subjectColor" value="#6C63FF">
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-ghost" id="cancelSubject">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveSubjectBtn">Save Subject</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Timetable Session Modal -->
+    <div class="modal-overlay" id="sessionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="sessionModalTitle">Add Study Session</h2>
+                <button class="modal-close" id="closeSessionModal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <form id="sessionForm">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="sessionSubject">Subject <span class="required">*</span></label>
+                        <select id="sessionSubject" required>
+                            <option value="">Select subject</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sessionDay">Day <span class="required">*</span></label>
+                        <select id="sessionDay" required>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sessionTimeSlot">Time Slot <span class="required">*</span></label>
+                        <select id="sessionTimeSlot" required>
+                            <option value="06:00 - 07:00">06:00 - 07:00</option>
+                            <option value="07:00 - 08:00">07:00 - 08:00</option>
+                            <option value="08:00 - 09:00">08:00 - 09:00</option>
+                            <option value="09:00 - 10:00">09:00 - 10:00</option>
+                            <option value="10:00 - 11:00">10:00 - 11:00</option>
+                            <option value="11:00 - 12:00">11:00 - 12:00</option>
+                            <option value="12:00 - 13:00">12:00 - 13:00</option>
+                            <option value="13:00 - 14:00">13:00 - 14:00</option>
+                            <option value="14:00 - 15:00">14:00 - 15:00</option>
+                            <option value="15:00 - 16:00">15:00 - 16:00</option>
+                            <option value="16:00 - 17:00">16:00 - 17:00</option>
+                            <option value="17:00 - 18:00">17:00 - 18:00</option>
+                            <option value="18:00 - 19:00">18:00 - 19:00</option>
+                            <option value="19:00 - 20:00">19:00 - 20:00</option>
+                            <option value="20:00 - 21:00">20:00 - 21:00</option>
+                            <option value="21:00 - 22:00">21:00 - 22:00</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="sessionTopic">Topic / Chapter (Optional)</label>
+                        <input type="text" id="sessionTopic" placeholder="e.g., Chapter 5 - Calculus">
+                    </div>
+                </div>
+                <input type="hidden" id="sessionId">
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-ghost" id="cancelSession">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Session</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Category Modal -->
+    <div class="modal-overlay" id="customCategoryModal">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2>Add Custom Category</h2>
+                <button class="modal-close" id="closeCustomCatModal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <form id="customCategoryForm">
+                <div class="form-group">
+                    <label for="customCategoryName">Category Name</label>
+                    <input type="text" id="customCategoryName" placeholder="e.g., Engineering" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-ghost" id="cancelCustomCat">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2>Confirm Delete</h2>
+                <button class="modal-close" id="closeConfirmModal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="confirm-body">
+                <p id="confirmMessage">Are you sure you want to delete this item?</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" id="confirmCancel">Cancel</button>
+                <button class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
